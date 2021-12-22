@@ -108,7 +108,7 @@ let bol ={
     contenu: [],
     melanger(nomMelange){
         let newMelange = {
-            nom:"nomMelange",
+            nom: nomMelange,
             etat: "pas cuit",
         }
         this.contenu = newMelange
@@ -184,7 +184,16 @@ for (let i = 0; i < bol.contenu.length; i++) {
 }
 console.log(bol.contenu)
 // Mélanger le contenu du bol avec la méthode melanger. on va nommer ce mélange une 'omelette' (à passer en param).
+console.log(`${personne1.nom} mélange ${bol.contenu}`)
+bol.melanger("omelette")
 // Afficher un message avec le nouveau mélange
+console.log(`${personne1.nom} obtient une ${bol.contenu.nom} ${bol.contenu.etat}`)
 // vider le contenu du bol dans la poele. Il ne doit plus rien avoir dans le bol et y avoir juste l'omelette pas cuite.
+poele.contenu.push(bol.contenu)
+console.log(`${personne1.nom} verse ${bol.contenu.nom} dans ${poele.nom}`)
+
+
+
 // Cuire l'omelette avec la méthode de la poele 
+poele.cuire()
 // Afficher un message final, notre omelette est cuite :)
