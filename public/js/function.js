@@ -13,7 +13,7 @@ export function couper(ingredient){
 }
 
 export function cuire(){
-    console.log(`${this.contenu[0].nom} est en train de cuire dans ${poele.nom}`)
+    console.log(`${this.contenu[0].nom} est en train de cuire dans ${this.nom}`)
     setTimeout(() => {
         this.contenu[0].etat = "cuit"
         console.log(`${this.contenu[0].nom} est cuit !`)

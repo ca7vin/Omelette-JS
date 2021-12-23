@@ -108,5 +108,5 @@ bol.contenu.splice(0, 1)
 console.log(bol)
 console.log(poele)
 // Cuire l'omelette avec la méthode de la poele 
-
+poele.action()
 // Afficher un message final, notre omelette est cuite :)
