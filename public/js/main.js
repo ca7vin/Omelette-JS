@@ -1,118 +1,31 @@
 
-/** Créer un objet personne. Cette personne doit avoir des propriétés et des méthodes : 
-* - nom(string)
-* - lieu(string)
-* - argent(number)
-* - mainDroite(tableau)
-* ( du coup main gauche(tableau))
-* - seDeplacer(lieu)
-* - payerArticle(article)
-* - couper(ingredient, outil)
-*/
-let personne1 = {
-    nom: "Calvin",
-    lieu: "Maison",
-    argent: 567,
-    mainDroite : [],
-    mainGauche : [],
-    seDeplacer(depart, arrivee){
-        depart.personnes.splice(depart.personnes.indexOf(this), 1);
-        arrivee.personnes.push(this);
-        console.log(`${this.nom} est actuellement à ${arrivee.nom}`);
-    },
-    payerArticle(article){
-        this.argent = this.argent - article.prix
-        console.log(`${this.nom} achète du ${article.nom} pour ${article.prix}`);
-    },
-    couper(ingredient, outil){
-        outil.couper(ingredient)
-    },
-}
-/**
-* Créer un lieu "maison" (un objet) avec comme propriété "nom: 'maison'" et "personnes = []" => qui sera un tableau de personnes présentes dans la maison :
-*/
-let maison = {
-    nom: 'Maison',
-    personnes: [],
-}
-/**
-* Créer un outil (couteau) pour découper les ingrédients achetés
-* propriétés : nom et action.
-* action a comme valeur l'état "coupé" (qui sera mis aux légumes lorsqu'ils seront coupés avec le méthode de "personne".)
-*/
-let couteau = {
-    nom: "couteau",
-    couper(ingredient){
-        console.log(`${ingredient.nom} est coupé en morceau  l'aide de ${this.nom}`)
-        ingredient.etat = "coupé"
-    }
-}
-/**
- * Créer des produits (ingrédients) à mettre dans le magasin qui serviront à créer l'omelette (oignon, oeuf, epice, fromage, ...);
- * propriétés : nom, etats ( entier,coupé, moulu), prix
- */
-class Ingredients {
-    constructor(nom, etat, prix){
-        this.nom = nom;
-        this.etat = etat;
-        this.prix = prix;
-    }
-}
+
+import { Personnes } from "./class.js";
+import { Lieux } from "./class.js";
+import { Magasins } from "./class.js";
+import { Contenants } from "./class.js";
+import { Ingredients } from "./class.js";
+import { melanger } from "./function.js";
+import { cuire } from "./function.js";
+import { couper } from "./function.js";
+
+let personne1 = new Personnes("Calvin", "Maison", 567, [], [])
 
 let oignon = new Ingredients("oignon", "entier", 1.99)
 let oeuf = new Ingredients("oeuf", "entier", 0.5)
 let epices = new Ingredients("epices", "moulu", 1.30)
 let fromage = new Ingredients("fromage", "entier", 4.79)
 let poivron = new Ingredients("poivron", "entier", 0.75)
-// Créer un lieu "epicerie" qui a comme propriétés :
-// nom, personnes = [], paniers (un tableau d'objets "panier" avec une propriété "type" égal à panier et le contenu du panier, égal à un tableau vide),
-// Les "ingrédients" créés juste au dessus contenus dans un tableau.
-let epicerie = {
-    nom: "Epicerie",
-    personnes: [],
-    paniers: [
-        {
-            type: "panier1",
-            contenu: [],
-        },
-        {
-            type: "panier2",
-            contenu: [],
-        },
-        {
-            type: "panier3",
-            contenu: [],
-        }
-    ],
-    stock: [oignon, oeuf, epices, fromage, poivron]
-}
-/**
- * Créer un poele avec un tableau comme contenu. Et avec une méthode cuir() qui, après 4 secondes, met l'état 'cuit' à this.contenu[0]. On peut faire ça avec la fonction setTimeout(()=> {}, 4000)
- * let
- */
-let poele = {
-    nom: "poele",
-    contenu: [],
-    cuire(){
-        console.log(`${this.contenu[0].nom} est en train de cuire dans ${poele.nom}`)
-        setTimeout(() => {
-            this.contenu[0].etat = "cuit"
-            console.log(`${this.contenu[0].nom} est cuit !`)
-        }, 4000);
-    }
-}
-// Créer un bol avec un tableau comme contenu
-// ajouter une méthode melanger(nomMelange) qui va créer un nouvel objet "newMelange" avec comme nom la variable nomMelange passé en paramètre et avec 'pas cuit' en etat. cette méthode remplacera this.contenu par [l'obj newMelange]
-let bol ={
-    nom: "bol",
-    contenu: [],
-    melanger(nomMelange){
-        let newMelange = {
-            nom: nomMelange,
-            etat: "pas cuit",
-        }
-        this.contenu = [newMelange]
-    }
+
+let maison = new Lieux("maison", [])
+let epicerie = new Magasins("epicerie", [],[{type: "panier1",contenu: [],}, {type: "panier2", contenu: [],},{type: "panier3",contenu: [],}], [oignon, oeuf, epices, fromage, poivron] )
+
+let bol = new Contenants("bol", [], melanger);
+let poele = new Contenants("poele", [], cuire)
+
+let couteau = {
+    nom: "couteau",
+    couper
 }
 /**** DEBUT DE L'OMELETTE ****/
 
@@ -185,7 +98,7 @@ for (let i = 0; i < bol.contenu.length; i++) {
 console.log(bol.contenu)
 // Mélanger le contenu du bol avec la méthode melanger. on va nommer ce mélange une 'omelette' (à passer en param).
 console.log(`${personne1.nom} mélange ${bol.contenu}`)
-bol.melanger("omelette")
+bol.action("omelette", bol)
 // Afficher un message avec le nouveau mélange
 console.log(`${personne1.nom} obtient une ${bol.contenu.nom} ${bol.contenu.etat}`)
 // vider le contenu du bol dans la poele. Il ne doit plus rien avoir dans le bol et y avoir juste l'omelette pas cuite.
@@ -195,5 +108,5 @@ bol.contenu.splice(0, 1)
 console.log(bol)
 console.log(poele)
 // Cuire l'omelette avec la méthode de la poele 
-poele.cuire()
+
 // Afficher un message final, notre omelette est cuite :)
